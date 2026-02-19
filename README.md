@@ -1,0 +1,1 @@
+# Chess in HTML, CSS and JS (WIP)
