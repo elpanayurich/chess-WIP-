@@ -1,10 +1,11 @@
 const columns = ["a", "b", "c", "d", "e", "f", "g", "h"];
 let squares = Array.from({ length: 8 }, () => Array(8).fill(null));
-let empassant_square;
+let empassant_square = "";
 
 let turn = 1;
 let selected_piece;
 let move_sound;
+let castling;
 
 let white_pieces = [];
 let black_pieces = [];
@@ -62,8 +63,8 @@ function load_pieces() {
         { type: "rook", id: 2, color: "white", position: "1,8", url: white_pieces_links[1] }
     );
     black_pieces.push(
-        { type: "rook", id: 1, color: "white", position: "8,1", url: black_pieces_links[1] },
-        { type: "rook", id: 2, color: "white", position: "8,8", url: black_pieces_links[1] }
+        { type: "rook", id: 1, color: "black", position: "8,1", url: black_pieces_links[1] },
+        { type: "rook", id: 2, color: "black", position: "8,8", url: black_pieces_links[1] }
     );
 
     white_pieces.push(
@@ -71,8 +72,8 @@ function load_pieces() {
         { type: "knight", id: 2, color: "white", position: "1,7", url: white_pieces_links[2] }
     );
     black_pieces.push(
-        { type: "knight", id: 1, color: "white", position: "8,2", url: black_pieces_links[2] },
-        { type: "knight", id: 2, color: "white", position: "8,7", url: black_pieces_links[2] }
+        { type: "knight", id: 1, color: "black", position: "8,2", url: black_pieces_links[2] },
+        { type: "knight", id: 2, color: "black", position: "8,7", url: black_pieces_links[2] }
     );
 
     white_pieces.push(
@@ -80,14 +81,14 @@ function load_pieces() {
         { type: "bishop", id: 2, color: "white", position: "1,6", url: white_pieces_links[3] }
     );
     black_pieces.push(
-        { type: "bishop", id: 1, color: "white", position: "8,3", url: black_pieces_links[3] },
-        { type: "bishop", id: 2, color: "white", position: "8,6", url: black_pieces_links[3] }
+        { type: "bishop", id: 1, color: "black", position: "8,3", url: black_pieces_links[3] },
+        { type: "bishop", id: 2, color: "black", position: "8,6", url: black_pieces_links[3] }
     );
 
     white_pieces.push({ type: "king", id: 1, color: "white", position: "1,5", url: white_pieces_links[4] });
     white_pieces.push({ type: "queen", id: 1, color: "white", position: "1,4", url: white_pieces_links[5] });
-    black_pieces.push({ type: "king", id: 1, color: "white", position: "8,5", url: black_pieces_links[4] });
-    black_pieces.push({ type: "queen", id: 1, color: "white", position: "8,4", url: black_pieces_links[5] });
+    black_pieces.push({ type: "king", id: 1, color: "black", position: "8,5", url: black_pieces_links[4] });
+    black_pieces.push({ type: "queen", id: 1, color: "black", position: "8,4", url: black_pieces_links[5] });
     reload_pieces();
 }
 
@@ -168,7 +169,14 @@ function add_listeners(){
                             empassant_square = "";
                         }
                         play_move_sound();
-                        piece.position = square.id;
+                        if (!(castling)) {
+                            piece.position = square.id;
+                        } else {
+                            castling = false;
+                            castle_white_1 = false;
+                            castle_white_2 = false;
+                        }
+                        
                         turn = (turn % 2) + 1;
                     }
                 }
@@ -181,7 +189,13 @@ function add_listeners(){
                             empassant_square = "";
                         }
                         play_move_sound();
-                        piece.position = square.id;
+                        if (!(castling)) {
+                            piece.position = square.id;
+                        } else {
+                            castling = false;
+                            castle_black_1 = false;
+                            castle_black_2 = false;
+                        }
                         turn = (turn % 2) + 1;
                     }
                 }
