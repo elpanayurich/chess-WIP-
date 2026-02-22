@@ -200,7 +200,6 @@ function add_listeners(){
                         if(empassant_square.includes("white")) {
                             empassant_square = "";
                         }
-                        play_move_sound();
                         if (!(castling)) {
                             piece.position = square.id;
                         } else {
