@@ -623,19 +623,6 @@ function calculate_attacked_squares() {
     attacked_squares_black = [...new Set(attacked_squares_black)];
     attacked_squares_black = attacked_squares_black.filter(coord => !coord.includes('0'));
     attacked_squares_black = attacked_squares_black.filter(coord => !coord.includes('-'));
-
-    let squares = document.querySelectorAll('.square');
-    for (let square of squares) {
-        square.removeAttribute('style');
-    }
-
-    for (let id of attacked_squares_white) {
-        let square = document.getElementById(id);
-        if (square) {
-            square.style.setProperty("background-color", "rgba(248, 103, 103, 0.5)", "important");
-        }
-    }
-
 }
 
 function play_move_sound() {
