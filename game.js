@@ -251,7 +251,6 @@ function check_valid_king_move(initial_row, initial_col, final_row, final_col, c
             return false;
         }
     }
-    console.log("bbbbbbbbbbbbbbbb")
     if (diff_row <= 1 && diff_col <= 1) {
         check_eat(final_position, color)
         castle_black_1 = false;
@@ -330,7 +329,17 @@ function check_eat(final_position, color) {
         
         if (index !== -1) {
             let capturedPiece = black_pieces.splice(index, 1)[0];
-            eaten_black.push(`${capturedPiece.type}_${capturedPiece.id}`);
+            if (in_check) {
+                calculate_attacked_squares()
+                let still_in_check = check_if_in_check(color);
+                if (still_in_check) {
+                    black_pieces.splice(index, 0, capturedPiece);
+                } else {
+                    eaten_black.push(`${capturedPiece.type}_${capturedPiece.id}`);
+                }
+            } else {
+                eaten_black.push(`${capturedPiece.type}_${capturedPiece.id}`);
+            } 
         }
     }
 
@@ -339,7 +348,17 @@ function check_eat(final_position, color) {
         
         if (index !== -1) {
             let capturedPiece = white_pieces.splice(index, 1)[0];
-            eaten_white.push(`${capturedPiece.type}_${capturedPiece.id}`);
+            if (in_check) {
+                calculate_attacked_squares()
+                let still_in_check = check_if_in_check(color);
+                if (still_in_check) {
+                    white_pieces.splice(index, 0, capturedPiece);
+                } else {
+                    eaten_white.push(`${capturedPiece.type}_${capturedPiece.id}`);
+                }
+            } else {
+                eaten_white.push(`${capturedPiece.type}_${capturedPiece.id}`);
+            }
         }
     }
 }
