@@ -162,13 +162,13 @@ function add_listeners(){
                 }
 
                 if (collision && piece.id.includes("white") && turn == 1) {
-                    let piece = white_pieces.find(p =>  p.type === identifier_type && p.id === Number(identifier_id));
                     color = "white";
+                    let piece = white_pieces.find(p =>  p.type === identifier_type && p.id === Number(identifier_id));
+                    let initial_position = piece.position;
                     if (check_valid_move(piece.type, piece.position, square.id, color, piece.id)) {
                         if(empassant_square.includes("black")) {
                             empassant_square = "";
                         }
-                        play_move_sound();
                         if (!(castling)) {
                             piece.position = square.id;
                         } else {
@@ -176,14 +176,26 @@ function add_listeners(){
                             castle_white_1 = false;
                             castle_white_2 = false;
                         }
-                        
-                        turn = (turn % 2) + 1;
+                        calculate_attacked_squares()
+                        if (in_check) {
+                            let still_in_check = check_if_in_check(color);
+                            if (still_in_check) {
+                               piece.position = initial_position;  
+                            } else {
+                                play_move_sound();
+                                turn = (turn % 2) + 1;
+                            }
+                        } else {
+                            play_move_sound();
+                            turn = (turn % 2) + 1;
+                        }
                     }
                 }
 
                 if (collision && piece.id.includes("black") && turn == 2) {
                     color = "black";
                     let piece = black_pieces.find(p =>  p.type === identifier_type && p.id === Number(identifier_id));
+                    let initial_position = piece.position;
                     if (check_valid_move(piece.type, piece.position, square.id, color, piece.id)) {
                         if(empassant_square.includes("white")) {
                             empassant_square = "";
@@ -196,7 +208,19 @@ function add_listeners(){
                             castle_black_1 = false;
                             castle_black_2 = false;
                         }
-                        turn = (turn % 2) + 1;
+                        calculate_attacked_squares()
+                        if (in_check) {
+                            let still_in_check = check_if_in_check(color);
+                            if (still_in_check) {
+                               piece.position = initial_position;  
+                            } else {
+                                play_move_sound();
+                                turn = (turn % 2) + 1;
+                            }
+                        } else {
+                            play_move_sound();
+                            turn = (turn % 2) + 1;
+                        }
                     }
                 }
                 reload_pieces()
