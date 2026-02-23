@@ -369,6 +369,10 @@ function check_castling(initial_row, initial_col, final_row, final_col, color, f
     let direction_row = Math.sign(final_row - initial_row);
     let direction_col = Math.sign(final_col - initial_col);
 
+    if (in_check) {
+        return false;
+    }
+
     for (let i = 0; i < diff_col - 1; i++) {
         let path_row = initial_row + direction_row * (i + 1);
         let path_column = initial_col + direction_col * (i + 1);
