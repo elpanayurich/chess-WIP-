@@ -171,6 +171,9 @@ function add_listeners(){
                         }
                         if (!(castling)) {
                             piece.position = square.id;
+                            if (piece.type == "pawn" && piece.position[0] == "8") {
+                                handle_promotion(piece, color);
+                            }
                         } else {
                             castling = false;
                             castle_white_1 = false;
@@ -246,3 +249,40 @@ function check_collision(square, piece) {
     return false;
 }
 
+function handle_promotion(piece, color) {
+    let overlay = document.createElement("div");
+    overlay.id = "promotion_overlay";
+    
+    // Position logic: Top for White (row 8), Bottom for Black (row 1)
+    if (color === "white") {
+        overlay.style.top = "0px";
+    } else {
+        overlay.style.bottom = "0px";
+    }
+
+    document.body.appendChild(overlay);
+
+    let links = (color === "white") ? white_pieces_links : black_pieces_links;
+    let choices = [
+        { type: "queen", url: links[5] },
+        { type: "rook", url: links[1] },
+        { type: "bishop", url: links[3] },
+        { type: "knight", url: links[2] }
+    ];
+
+    choices.forEach(choice => {
+        let img = document.createElement("img");
+        img.src = choice.url;
+        img.className = "promo-btn";
+        img.onclick = () => {
+            piece.type = choice.type;
+            piece.url = choice.url;
+            piece.id += 3;
+            overlay.remove();
+            calculate_attacked_squares(); 
+            in_check = check_if_in_check(turn === 1 ? "black" : "white");
+            reload_pieces();
+        };
+        overlay.appendChild(img);
+    });
+}
