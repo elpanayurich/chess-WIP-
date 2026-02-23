@@ -7,6 +7,7 @@ body {
     height: 100vh;
     overflow: hidden;
     background-color: rgb(49, 49, 49);
+    position: relative;
 }
 
 .row {
@@ -42,4 +43,28 @@ body {
     height: 85px;
     user-select: none;
     -webkit-user-drag: none;
+}
+
+#promotion_overlay {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally relative to board */
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #333;
+    display: flex;
+    flex-direction: column; /* Vertical menu like pro sites */
+    z-index: 9999;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+.promo-btn {
+    width: 90px; /* Match your square size */
+    height: 90px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.promo-btn:hover {
+    background: #add8e6;
 }
